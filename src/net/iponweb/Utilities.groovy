@@ -15,18 +15,18 @@ class Utilities {
     long bt = (System.currentTimeMillis() - script.currentBuild.startTimeInMillis) / 1000
     long btm = bt/60
     long bts = bt%60
-    btime = String.format("%d min %02d sec", btm, bts)
+    def btime = String.format("%d min %02d sec", btm, bts)
     if (buildStatus == 'STARTED') {
-      color = 'YELLOW'
-      colorCode = '#EEEE00'
+      def color = 'YELLOW'
+      def colorCode = '#EEEE00'
     } else if (buildStatus == 'SUCCESSFUL') {
-      color = 'GREEN'
-      colorCode = '#00AA00'
-      summary = "${subject} after ${btime} (<${env.BUILD_URL}|Open>)\n${changeLogMsg}"
+      def color = 'GREEN'
+      def colorCode = '#00AA00'
+      summary = "${subject} after ${btime} (<${script.env.BUILD_URL}|Open>)\n${changeLogMsg}"
     } else {
-      color = 'RED'
-      colorCode = '#AA0000'
-      summary = "${subject} after ${btime} (<${env.BUILD_URL}|Open>)\n${changeLogMsg}"
+      def color = 'RED'
+      def colorCode = '#AA0000'
+      summary = "${subject} after ${btime} (<${script.env.BUILD_URL}|Open>)\n${changeLogMsg}"
     }
     script.slackSend (color: colorCode, message: summary)
   }
