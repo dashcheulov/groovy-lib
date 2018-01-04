@@ -4,7 +4,7 @@ class Utilities {
   static def notifyBuild(script, String buildStatus) {
     buildStatus =  buildStatus ?: 'SUCCESSFUL'
     def subject = "${script.env.JOB_NAME} - #${script.env.BUILD_NUMBER} ${buildStatus}"
-    def summary = "${subject} (<${script.env.BUILD_URL}|Open>)"
+    def colorCode = '#00AA00'
     def changeLogMsg = 'Changes:\n'
     if (script.currentBuild.changeSets.size() >= 1) {
         def entries = script.currentBuild.changeSets[0].items
@@ -16,17 +16,12 @@ class Utilities {
     long btm = bt/60
     long bts = bt%60
     def btime = String.format("%d min %02d sec", btm, bts)
+    def summary = "${subject} after ${btime} (<${script.env.BUILD_URL}|Open>)\n${changeLogMsg}"
     if (buildStatus == 'STARTED') {
-      def color = 'YELLOW'
-      def colorCode = '#EEEE00'
-    } else if (buildStatus == 'SUCCESSFUL') {
-      def color = 'GREEN'
-      def colorCode = '#00AA00'
-      summary = "${subject} after ${btime} (<${script.env.BUILD_URL}|Open>)\n${changeLogMsg}"
-    } else {
-      def color = 'RED'
-      def colorCode = '#AA0000'
-      summary = "${subject} after ${btime} (<${script.env.BUILD_URL}|Open>)\n${changeLogMsg}"
+      colorCode = '#EEEE00'
+      summary = "${subject} (<${script.env.BUILD_URL}|Open>)"
+    } else if (buildStatus == 'FAILED') {
+      colorCode = '#AA0000'
     }
     script.slackSend (color: colorCode, message: summary)
   }
