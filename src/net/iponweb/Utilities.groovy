@@ -3,9 +3,8 @@ package net.iponweb
 class Utilities implements Serializable {
   def g
   Utilities(script) {this.g = script}
-  def notifyBuild(currentBuild, String buildStatus=null) {
-    buildStatus =  buildStatus ?: currentBuild.result
-    buildStatus =  buildStatus ?: 'SUCCESS'
+  def notifyBuild(currentBuild) {
+    def buildStatus = currentBuild.result ?: 'SUCCESS'
     def subject = "${g.env.JOB_NAME} - #${g.env.BUILD_NUMBER} ${buildStatus}"
     def colorCode = '#00AA00'
     def changeLogMsg = 'Changes:\n'
