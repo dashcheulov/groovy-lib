@@ -1,14 +1,16 @@
 #!/usr/bin/groovy
+import net.iponweb.Utilities
+
 def call(Closure body) {
-  def g = body.delegate
+  def iow = new Utilities(this)
   try {
-    g.iow.notifyBuild g.currentBuild
+    iow.notifyBuild currentBuild
     body()
-    g.currentBuild.result = "SUCCESS"
+    currentBuild.result = "SUCCESS"
   } catch (e) {
-    g.currentBuild.result = "FAILURE"
+    currentBuild.result = "FAILURE"
     throw e
   } finally {
-    g.iow.notifyBuild g.currentBuild
+    iow.notifyBuild currentBuild
   }
 }
