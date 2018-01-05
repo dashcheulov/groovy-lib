@@ -1,13 +1,14 @@
 #!/usr/bin/groovy
 def call(Closure body) {
+  def g = body.delegate
   try {
-    this.iow.notifyBuild this.currentBuild
+    g.iow.notifyBuild g.currentBuild
     body()
-    this.currentBuild.result = "SUCCESS"
+    g.currentBuild.result = "SUCCESS"
   } catch (e) {
-    this.currentBuild.result = "FAILURE"
+    g.currentBuild.result = "FAILURE"
     throw e
   } finally {
-    this.iow.notifyBuild this.currentBuild
+    g.iow.notifyBuild g.currentBuild
   }
 }
