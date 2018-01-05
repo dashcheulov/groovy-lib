@@ -2,7 +2,7 @@
 package net.iponweb
 class Utilities {
   static def notifyBuild(script, String buildStatus) {
-    buildStatus =  buildStatus ?: 'SUCCESSFUL'
+    buildStatus =  buildStatus ?: 'SUCCESS'
     def subject = "${script.env.JOB_NAME} - #${script.env.BUILD_NUMBER} ${buildStatus}"
     def colorCode = '#00AA00'
     def changeLogMsg = 'Changes:\n'
