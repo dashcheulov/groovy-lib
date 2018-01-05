@@ -12,7 +12,7 @@
 import static net.iponweb.Utilities.changeLogMsg
 
 def call(Closure body) {
-    def config = [ credentialsId: 'oscrc', project: 'iponweb:iowops:testing', oscrcFile: '/home/jenkins/.oscrc', src_dir: 'deb_dist' ]
+    config = [ credentialsId: 'oscrc', project: 'iponweb:iowops:testing', oscrcFile: '/home/jenkins/.oscrc', src_dir: 'deb_dist' ]
     body.resolveStrategy = Closure.DELEGATE_FIRST
     body.delegate = config
     body()
@@ -24,10 +24,10 @@ def call(Closure body) {
       }
       dir('obs') {
         sh "osc -A ${apiurl} init '${config.project}'"
-        try { sh "osc -A ${apiurl} co '${config.packageName}' && rm ${PACKAGE}/*" }
+        try { sh "osc -A ${apiurl} co '${config.packageName}' && rm ${config.packageName}/*" }
         catch(e) { sh "osc -A ${apiurl} mkpac '${config.packageName}'" }
         sh "cp -v ../${config.src_dir}/* '${config.packageName}/'"
-        dir(config.package) {
+        dir(config.packageName) {
           sh "osc -A ${apiurl} ar"
           sh "osc -A ${apiurl} ci -m '${env.BUILD_TAG}\n\n${changeLogMsg(currentBuild.changeSets)}'"
         }
