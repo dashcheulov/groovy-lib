@@ -12,7 +12,7 @@
 import static net.iponweb.Utilities.changeLogMsg
 
 def call(Closure body) {
-    def config = [credentialsId: 'oscrc', project: 'iponweb:iowops:testing', oscrcFile: '/home/jenkins/.oscrc']
+    def config = [ credentialsId: 'oscrc', project: 'iponweb:iowops:testing', oscrcFile: '/home/jenkins/.oscrc', src_dir: 'deb_dist' ]
     body.resolveStrategy = Closure.DELEGATE_FIRST
     body.delegate = config
     body()
