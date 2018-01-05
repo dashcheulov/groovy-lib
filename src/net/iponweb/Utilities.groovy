@@ -20,7 +20,7 @@ class Utilities {
     if (buildStatus == 'STARTED') {
       colorCode = '#EEEE00'
       summary = "${subject} (<${script.env.BUILD_URL}|Open>)"
-    } else if (buildStatus == 'FAILED') {
+    } else if (buildStatus == 'FAILURE') {
       colorCode = '#AA0000'
     }
     script.slackSend (color: colorCode, message: summary)
