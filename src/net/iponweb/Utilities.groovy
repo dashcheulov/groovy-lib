@@ -11,6 +11,8 @@ class Utilities {
         for (int j = 0; j < entries.length; j++) {
             changeLogMsg = changeLogMsg + "- ${entries[j].msg} [${entries[j].author}]\n"
         }
+    } else {
+        changeLogMsg = 'No changes\n'
     }
     long bt = (System.currentTimeMillis() - script.currentBuild.startTimeInMillis) / 1000
     long btm = bt/60
