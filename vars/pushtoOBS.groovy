@@ -3,10 +3,10 @@
  * Template of stage of pushing to iow OBS
  * Definition in a pipeline for example
  *   pushtoOBS {
- *     def package = PACKAGE
- *     def srcDir = 'deb_dist'
- *     def credentialsId = 'oscrc'
- *     def project = 'iponweb:iowops:testing'
+ *     packageName = PACKAGE
+ *     srcDir = 'deb_dist'
+ *     credentialsId = 'oscrc'
+ *     project = 'iponweb:iowops:testing'
  *   }
  */
 import static net.iponweb.Utilities.changeLogMsg
@@ -20,13 +20,13 @@ def call(Closure body) {
     stage('Push to OBS') {
       withCredentials([string(credentialsId: config.credentialsId, variable: 'OSCRC')]) {
         writeFile file: config.oscrcFile, text: OSCRC.replace("\\n", "\n")
-        String apiurl = OSCRC.find(/(?!\[)https?:\/\/[\w.]*(?=\])/)
+        apiurl = OSCRC.find(/(?!\[)https?:\/\/[\w.]*(?=\])/)
       }
       dir('obs') {
         sh "osc -A ${apiurl} init '${config.project}'"
-        try { sh "osc -A ${apiurl} co '${config.package}' && rm ${PACKAGE}/*" }
-        catch(e) { sh "osc -A ${apiurl} mkpac '${config.package}'" }
-        sh "cp -v ../${config.src_dir}/* '${config.package}/'"
+        try { sh "osc -A ${apiurl} co '${config.packageName}' && rm ${PACKAGE}/*" }
+        catch(e) { sh "osc -A ${apiurl} mkpac '${config.packageName}'" }
+        sh "cp -v ../${config.src_dir}/* '${config.packageName}/'"
         dir(config.package) {
           sh "osc -A ${apiurl} ar"
           sh "osc -A ${apiurl} ci -m '${env.BUILD_TAG}\n\n${changeLogMsg(currentBuild.changeSets)}'"
