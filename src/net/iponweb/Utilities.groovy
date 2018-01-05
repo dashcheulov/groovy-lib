@@ -4,7 +4,8 @@ class Utilities implements Serializable {
   def g
   Utilities(script) {this.g = script}
   def notifyBuild(currentBuild, String buildStatus) {
-    buildStatus =  buildStatus ?: currentBuild.result
+    def result = currentBuild.result
+    buildStatus =  buildStatus ?: result
     buildStatus =  buildStatus ?: 'SUCCESS'
     def subject = "${g.env.JOB_NAME} - #${g.env.BUILD_NUMBER} ${buildStatus}"
     def colorCode = '#00AA00'
