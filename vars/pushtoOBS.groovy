@@ -26,7 +26,7 @@ def call(Closure body) {
         sh "osc -A ${apiurl} init '${config.project}'"
         try { sh "osc -A ${apiurl} co '${config.packageName}' && rm ${config.packageName}/*" }
         catch(e) { sh "osc -A ${apiurl} mkpac '${config.packageName}'" }
-        sh "cp -v ../${config.src_dir}/* '${config.packageName}/'"
+        sh "find -E ./${config.src_dir} -type f -regex '.*\.(dsc|gz|xz)' -depth 1 -exec cp {} ${config.packageName}/ \;"
         dir(config.packageName) {
           sh "osc -A ${apiurl} ar"
           sh "osc -A ${apiurl} ci -m '\n${env.BUILD_TAG}\n\n${changeLogMsg(currentBuild.changeSets)}'"
