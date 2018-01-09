@@ -20,14 +20,14 @@ def call(Closure body) {
                 checkout scm
                 def tag = sh script: 'hg log --limit 1 --template "{latesttag}"', returnStdout: true
                 sh "hg up ${tag} && rm -r .hg"
-                version = tag.find(/[\d.]+/)
-                packageName = env.JOB_BASE_NAME + "_" + version
+                config.version = tag.find(/[\d.]+/)
+                config.packageName = env.JOB_BASE_NAME + "_" + config.version
             }
             stage('Build') {
                 sh "python3 setup.py --command-packages=stdeb.command sdist_dsc ${config.stdebArgs}"
             }
             pushtoOBS {
-                packageName = 'python-' + packageName
+                packageName = 'python-' + config.packageName
                 project = config.project
             }
         }
