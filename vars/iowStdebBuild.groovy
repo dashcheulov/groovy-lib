@@ -22,7 +22,7 @@ def call(Closure body) {
                 sh "hg up ${tag} && rm -r .hg"
                 config.version = tag.find(/[\d.]+/)
                 config.packageName = env.JOB_BASE_NAME + "_" + config.version
-                sh "sed -i 's/version=.*/version='\\''${config.version}'\\''/' setup.py" //override version
+                sh "sed -i 's/version=.*/version='\\''${config.version}'\\'',/' setup.py" //override version
             }
             stage('Build') {
                 sh "python3 setup.py --command-packages=stdeb.command sdist_dsc ${config.stdebArgs}"
